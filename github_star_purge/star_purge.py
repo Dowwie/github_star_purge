@@ -9,10 +9,10 @@ from github import Github
 def remove_star(user, q_starred_reports):
     repo = q_starred_reports.get(block=True)
     print("Removing: ", repo.full_name)
-    user.remove_from_starred(repo)
-
-    # Be nice and don't hammer github's api.  Instead, throttle requests:
-    time.sleep(1.5)
+    while user.has_in_starred(repo):
+        user.remove_from_starred(repo)
+        # Be nice and don't hammer github's api.  Instead, throttle requests:
+        time.sleep(1.5)
 
 
 def purge_stars(user):
